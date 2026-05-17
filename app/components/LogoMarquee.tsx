@@ -15,8 +15,8 @@ const logos = [
 
 const LogoMarquee = () => {
   return (
-    <section className="relative flex w-full flex-col items-center justify-center overflow-hidden border-t border-white/5 bg-black py-20">
-      <p className="mb-12 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
+    <section className="relative flex w-full flex-col items-center justify-center overflow-hidden border-t border-white/5 bg-black py-10 md:py-20">
+      <p className="mb-6 md:mb-12 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
         Trusted by innovative teams worldwide
       </p>
 

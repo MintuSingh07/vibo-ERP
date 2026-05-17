@@ -98,7 +98,7 @@ const CTA = () => {
   };
 
   return (
-    <section id="vouchers" className="relative w-full bg-black py-28 overflow-hidden border-t border-white/5">
+    <section id="vouchers" className="relative w-full bg-black py-14 md:py-28 overflow-hidden border-t border-white/5">
       {/* ── BACKGROUND AMBIENT NEON LIGHTS ── */}
       <div className="absolute top-1/3 left-1/4 h-[350px] w-[350px] rounded-full bg-emerald-600/10 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-1/3 right-1/4 h-[380px] w-[380px] rounded-full bg-purple-600/10 blur-[130px] pointer-events-none" />
@@ -110,14 +110,14 @@ const CTA = () => {
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         
         {/* Responsive Grid Split */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           
           {/* ── LEFT COLUMN: TYPOGRAPHY & CONVERSION ── */}
           <div className="lg:col-span-5 text-left flex flex-col justify-center">
             <span className="text-zinc-500 text-[10px] font-bold uppercase tracking-[0.25em] font-mono block">
               Interactive Preview
             </span>
-            <h2 className="text-4xl sm:text-5xl font-light tracking-[-0.02em] mt-3 leading-[1.15] text-white">
+            <h2 className="text-3xl sm:text-5xl font-medium tracking-[-0.02em] mt-3 leading-[1.15] text-white">
               Test-drive Vibo ERP <br className="hidden sm:inline" /> in <span className="font-cursive text-emerald-400 font-normal lowercase tracking-normal text-[1.12em] inline-block transform translate-y-0.5 select-none">real-time</span>.
             </h2>
             <p className="text-zinc-400 text-sm sm:text-base mt-5 leading-relaxed font-light tracking-wide">
@@ -186,14 +186,14 @@ const CTA = () => {
                 </div>
                 
                 {/* Switch Tabs */}
-                <div className="flex bg-zinc-950/80 border border-white/5 rounded-xl p-1 gap-1">
+                <div className="flex bg-zinc-950/80 border border-white/5 rounded-xl p-1 gap-0.5 sm:gap-1">
                   {(["sales", "purchase", "receipt"] as const).map((tab) => (
                     <button
                       key={tab}
                       type="button"
                       onClick={() => setActiveTab(tab)}
                       className={`
-                        px-4 py-2 rounded-lg text-[9px] font-bold uppercase tracking-wider transition-all duration-300
+                        px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg text-[9px] font-bold uppercase tracking-wider transition-all duration-300
                         ${activeTab === tab 
                           ? "bg-emerald-500 text-zinc-950 shadow-[0_2px_10px_rgba(16,185,129,0.25)]" 
                           : "text-zinc-500 hover:text-zinc-300"
@@ -207,7 +207,7 @@ const CTA = () => {
               </div>
 
               {/* LIVE DYNAMIC VOUCHER SHEET */}
-              <div className="mt-6 bg-zinc-950/70 border border-white/5 rounded-2xl p-5 relative">
+              <div className="mt-6 bg-zinc-950/70 border border-white/5 rounded-2xl p-4 sm:p-5 relative">
                 
                 {/* Meta details */}
                 <div className="flex justify-between text-[9px] text-zinc-500 font-mono pb-4 border-b border-white/5 tracking-wider">
@@ -218,8 +218,8 @@ const CTA = () => {
                 {/* Items list with adjustments */}
                 <div className="mt-4 flex flex-col gap-4">
                   {items.map((item) => (
-                    <div key={item.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-xl bg-zinc-900/40 border border-white/5">
-                      <div>
+                    <div key={item.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 p-3.5 rounded-xl bg-zinc-900/40 border border-white/5">
+                      <div className="text-left">
                         <h4 className="text-xs font-bold text-white tracking-tight leading-snug">{item.name}</h4>
                         <span className="text-[9.5px] text-zinc-500 font-mono tracking-wide block mt-1">
                           {item.weight > 0 ? `${item.weight.toLocaleString()} kg @ $${item.rate.toFixed(2)}/kg` : `Flat Service Fee`}
@@ -227,10 +227,10 @@ const CTA = () => {
                       </div>
 
                       {/* Micro-adjusters for Weights and Rates */}
-                      <div className="flex items-center gap-4">
+                      <div className="flex flex-wrap items-center justify-between sm:justify-end gap-3 sm:gap-4 w-full sm:w-auto border-t border-white/5 sm:border-t-0 pt-2.5 sm:pt-0">
                         {item.weight > 0 && (
                           <div className="flex items-center gap-1.5">
-                            <span className="text-[9px] text-zinc-500 font-mono mr-1 tracking-wider">WEIGHT:</span>
+                            <span className="text-[9px] text-zinc-500 font-mono mr-1 tracking-wider">WT:</span>
                             <button
                               type="button"
                               onClick={() => adjustWeight(item.id, -250)}
@@ -301,7 +301,7 @@ const CTA = () => {
 
                 {/* ── WhatsApp Instant Dispatcher Bar ── */}
                 <div className="mt-6 pt-5 border-t border-white/5 flex flex-col gap-3.5">
-                  <div className="flex justify-between items-center text-[9px] text-zinc-500 font-mono tracking-wider">
+                  <div className="flex flex-col sm:flex-row gap-1 sm:items-center sm:justify-between text-[9px] text-zinc-500 font-mono tracking-wider text-left sm:text-right">
                     <span>DISPATCH TARGET:</span>
                     <span className="text-zinc-300 font-semibold tracking-wide">+1 (555) 019-3240 (Matthew Smith)</span>
                   </div>

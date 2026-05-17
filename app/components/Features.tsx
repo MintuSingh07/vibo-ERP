@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 const ALL_PAYMENTS = [
   { id: "p1", name: "Marcus Vance", business: "Stripe Payment", amount: "+$1,250.00", time: "5m ago" },
@@ -20,6 +20,7 @@ const Features = () => {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [paymentsHovered, setPaymentsHovered] = useState(false);
   const [hoveredReport, setHoveredReport] = useState<string | null>(null);
+  const [activeCard, setActiveCard] = useState<number | null>(null);
 
   useEffect(() => {
     if (incomingId) {
@@ -30,7 +31,14 @@ const Features = () => {
     }
   }, [incomingId]);
 
+  const lastTriggered = useRef<number>(0);
+
   const handleMouseEnter = () => {
+    const now = Date.now();
+    // Prevent double-firing on mobile devices where tap triggers both hover and click simultaneously
+    if (now - lastTriggered.current < 200) return;
+    lastTriggered.current = now;
+
     setPaymentsHovered(true);
     const nextPayment = ALL_PAYMENTS[poolIndex];
     // Reset activeId first so it mounts with the collapsed styling initially
@@ -40,7 +48,139 @@ const Features = () => {
     setPoolIndex((prev) => (prev + 1) % ALL_PAYMENTS.length);
   };
   return (
-    <section id="features" className="relative w-full bg-black py-32 px-4 md:px-8 flex flex-col items-center overflow-hidden">
+    <section id="features" className="relative w-full bg-black py-16 md:py-32 px-4 md:px-8 flex flex-col items-center overflow-hidden">
+      {/* Dynamic Active Click State for Mobile Card Animations */}
+      <style dangerouslySetInnerHTML={{__html: `
+        /* Mirror all hover states on active-card click on mobile */
+        .active-card .group-hover\\:opacity-100 {
+          opacity: 1 !important;
+        }
+        .active-card .group-hover\\:opacity-40 {
+          opacity: 0.4 !important;
+        }
+        .active-card .group-hover\\:opacity-20 {
+          opacity: 0.2 !important;
+        }
+        .active-card .group-hover\\:opacity-10 {
+          opacity: 0.1 !important;
+        }
+        .active-card .group-hover\\:opacity-0 {
+          opacity: 0 !important;
+        }
+        .active-card .group-hover\\:scale-110 {
+          transform: scale(1.1) !important;
+        }
+        .active-card .group-hover\\:scale-105 {
+          transform: scale(1.05) !important;
+        }
+        .active-card .group-hover\\:scale-100 {
+          transform: scale(1) !important;
+        }
+        .active-card .group-hover\\:scale-95 {
+          transform: scale(0.95) !important;
+        }
+        .active-card .group-hover\\:scale-\\[0\\.55\\] {
+          transform: scale(0.55) !important;
+        }
+        .active-card .group-hover\\:scale-\\[0\\.7\\] {
+          transform: scale(0.7) !important;
+        }
+        .active-card .group-hover\\:scale-\\[0\\.72\\] {
+          transform: scale(0.72) !important;
+        }
+        .active-card .group-hover\\:scale-\\[0\\.85\\] {
+          transform: scale(0.85) !important;
+        }
+        .active-card .group-hover\\:scale-\\[0\\.9\\] {
+          transform: scale(0.9) !important;
+        }
+        .active-card .group-hover\\:translate-x-0 {
+          transform: translateX(0) !important;
+        }
+        .active-card .group-hover\\:translate-y-0 {
+          transform: translateY(0) !important;
+        }
+        .active-card .group-hover\\:translate-y-8 {
+          transform: translateY(32px) !important;
+        }
+        .active-card .group-hover\\:translate-y-\\[-2px\\] {
+          transform: translateY(-2px) !important;
+        }
+        .active-card .group-hover\\:-translate-y-2 {
+          transform: translateY(-8px) !important;
+        }
+        .active-card .group-hover\\:-translate-x-20 {
+          transform: translateX(-80px) !important;
+        }
+        .active-card .group-hover\\:translate-x-20 {
+          transform: translateX(80px) !important;
+        }
+        .active-card .group-hover\\:stroke-cyan-400 {
+          stroke: #22d3ee !important;
+        }
+        .active-card .group-hover\\:stroke-pink-400 {
+          stroke: #f472b6 !important;
+        }
+        .active-card .group-hover\\:stroke-violet-400 {
+          stroke: #a78bfa !important;
+        }
+        
+        /* Isometric transformations inside Card 4 */
+        .active-card .group-hover\\:\\[transform\\:rotateX\\(15deg\\)_rotateY\\(-5deg\\)_rotateZ\\(-8deg\\)_translateZ\\(-80px\\)\\] {
+          transform: rotateX(15deg) rotateY(-5deg) rotateZ(-8deg) translateZ(-80px) !important;
+        }
+        .active-card .group-hover\\:\\[transform\\:rotateX\\(15deg\\)_rotateY\\(-5deg\\)_rotateZ\\(-10deg\\)_translateZ\\(-40px\\)_translateX\\(-56px\\)_translateY\\(36px\\)\\] {
+          transform: rotateX(15deg) rotateY(-5deg) rotateZ(-10deg) translateZ(-40px) translateX(-56px) translateY(36px) !important;
+        }
+        .active-card .group-hover\\:\\[transform\\:rotateX\\(15deg\\)_rotateY\\(-5deg\\)_rotateZ\\(8deg\\)_translateZ\\(0px\\)_translateX\\(58px\\)_translateY\\(-12px\\)\\] {
+          transform: rotateX(15deg) rotateY(-5deg) rotateZ(8deg) translateZ(0px) translateX(58px) translateY(-12px) !important;
+        }
+        .active-card .group-hover\\:\\[transform\\:rotateX\\(12deg\\)_rotateY\\(-5deg\\)_rotateZ\\(-4deg\\)_translateZ\\(50px\\)_translateX\\(-12px\\)_translateY\\(-54px\\)\\] {
+          transform: rotateX(12deg) rotateY(-5deg) rotateZ(-4deg) translateZ(50px) translateX(-12px) translateY(-54px) !important;
+        }
+        .active-card .group-hover\\:scale-y-\\[70\\%\\] {
+          transform: scaleY(0.7) !important;
+        }
+        .active-card .group-hover\\:scale-y-\\[55\\%\\] {
+          transform: scaleY(0.55) !important;
+        }
+        .active-card .group-hover\\:scale-y-\\[85\\%\\] {
+          transform: scaleY(0.85) !important;
+        }
+        .active-card .group-hover\\:scale-y-\\[95\\%\\] {
+          transform: scaleY(0.95) !important;
+        }
+        .active-card .group-hover\\:scale-y-\\[40\\%\\] {
+          transform: scaleY(0.4) !important;
+        }
+
+        /* SVG animation trigger in Card 1 */
+        .active-card .wire-flow {
+          opacity: 1 !important;
+          animation: flowPackets 1s linear infinite !important;
+        }
+
+        /* Keyframes inside Card 4 & 5 */
+        .active-card .report-circle {
+          animation: progressGrow 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards !important;
+          animation-delay: 300ms !important;
+        }
+        .active-card .line-root-mid {
+          animation: drawRootToMid 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+          animation-delay: 350ms !important;
+        }
+        .active-card .line-mid-bottom {
+          animation: drawMidToBottom 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+          animation-delay: 1400ms !important;
+        }
+        .active-card .group-hover\\:top-\\[26px\\] {
+          top: 26px !important;
+        }
+        .active-card .group-hover\\:scale-\\[0\\.72\\] {
+          transform: scale(0.72) !important;
+        }
+      `}} />
+
       {/* Subtle Grid Pattern background for card floating contrast */}
       <div 
         className="absolute inset-0 opacity-[0.06] mix-blend-overlay pointer-events-none"
@@ -56,12 +196,12 @@ const Features = () => {
       {/* Container */}
       <div className="mx-auto flex max-w-7xl flex-col items-center text-center">
         {/* Small label above heading */}
-        <p className="mb-6 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
+        <p className="mb-3 md:mb-6 text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">
           Powerful Capabilities
         </p>
 
         {/* Main Heading */}
-        <h2 className="max-w-3xl text-4xl font-light tracking-tight text-white md:text-6xl leading-[1.15]">
+        <h2 className="max-w-3xl text-3xl sm:text-4xl font-medium tracking-tight text-white md:text-6xl leading-[1.15]">
           Everything you need to run your business <span className="font-cursive text-emerald-400 font-normal lowercase tracking-normal text-[1.12em] inline-block transform translate-y-0.5 select-none">efficiently</span>.
         </h2>
 
@@ -75,7 +215,10 @@ const Features = () => {
       {/* Bento Grid */}
       <div className="mt-20 grid w-full max-w-7xl grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(280px,_auto)] md:auto-rows-[minmax(320px,_auto)]">
         {/* Card 1: Comprehensive Annual Financial Reports (col-span-2) */}
-        <div className="group relative col-span-1 md:col-span-2 overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 backdrop-blur-md p-8 flex flex-col md:flex-row items-center justify-between gap-6 transition-all duration-300 hover:border-white/20 hover:bg-zinc-900/60 shadow-[0_8px_30px_rgb(0,0,0,0.5)]">
+        <div 
+          onClick={() => setActiveCard(activeCard === 1 ? null : 1)}
+          className={`group relative col-span-1 md:col-span-2 overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 backdrop-blur-md p-8 flex flex-col md:flex-row items-center justify-between gap-6 transition-all duration-300 hover:border-white/20 hover:bg-zinc-900/60 shadow-[0_8px_30px_rgb(0,0,0,0.5)] cursor-pointer select-none ${activeCard === 1 ? "active-card border-white/20 bg-zinc-900/60" : ""}`}
+        >
           {/* Ambient Glow */}
           <div className="absolute -right-20 -top-20 h-48 w-48 rounded-full bg-violet-500/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
@@ -110,7 +253,7 @@ const Features = () => {
           </div>
 
           {/* Right Showcase: Interactive Document & Spreading Connection Wires (No border, no bg, fully organic integration!) */}
-          <div className="relative w-full md:w-[240px] h-[220px] md:h-[240px] flex items-center justify-center shrink-0 z-10 select-none">
+          <div className="relative w-[240px] h-[240px] mx-auto flex items-center justify-center shrink-0 z-10 select-none mt-8 md:mt-0">
             {/* Embedded Custom CSS for the Flowing Wires Packets */}
             <style dangerouslySetInnerHTML={{__html: `
               @keyframes flowPackets {
@@ -283,7 +426,11 @@ const Features = () => {
         {/* Card 2: Secure Access & Payments (col-span-1) */}
         <div 
           onMouseEnter={handleMouseEnter}
-          className="group relative col-span-1 overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 backdrop-blur-md p-6 flex flex-col justify-between transition-all duration-300 hover:border-white/20 hover:bg-zinc-900/60 shadow-[0_8px_30px_rgb(0,0,0,0.5)]"
+          onClick={() => {
+            setActiveCard(activeCard === 2 ? null : 2);
+            handleMouseEnter();
+          }}
+          className={`group relative col-span-1 overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 backdrop-blur-md p-6 flex flex-col justify-between transition-all duration-300 hover:border-white/20 hover:bg-zinc-900/60 shadow-[0_8px_30px_rgb(0,0,0,0.5)] cursor-pointer select-none ${activeCard === 2 ? "active-card border-white/20 bg-zinc-900/60" : ""}`}
         >
           {/* Ambient Glow (Stays active once hovered) */}
           <div className={`absolute -left-20 -bottom-20 h-48 w-48 rounded-full bg-blue-500/5 blur-3xl transition-opacity duration-500 pointer-events-none ${
@@ -426,7 +573,10 @@ const Features = () => {
         </div>
 
         {/* Card 3: One-Click WhatsApp Automation (col-span-1) */}
-        <div className="group relative col-span-1 overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 backdrop-blur-md p-6 flex flex-col justify-between transition-all duration-300 hover:border-white/20 hover:bg-zinc-900/60 shadow-[0_8px_30px_rgb(0,0,0,0.5)]">
+        <div 
+          onClick={() => setActiveCard(activeCard === 3 ? null : 3)}
+          className={`group relative col-span-1 overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 backdrop-blur-md p-6 flex flex-col justify-between transition-all duration-300 hover:border-white/20 hover:bg-zinc-900/60 shadow-[0_8px_30px_rgb(0,0,0,0.5)] cursor-pointer select-none ${activeCard === 3 ? "active-card border-white/20 bg-zinc-900/60" : ""}`}
+        >
           {/* Ambient Glow */}
           <div className="absolute -right-20 -top-20 h-48 w-48 rounded-full bg-emerald-500/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
@@ -751,7 +901,10 @@ const Features = () => {
         </div>
 
         {/* Card 4: Comprehensive Business Reporting */}
-        <div className="group relative col-span-1 overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 backdrop-blur-md p-6 flex flex-col justify-between transition-all duration-300 hover:border-white/20 hover:bg-zinc-900/60 shadow-[0_8px_30px_rgb(0,0,0,0.5)]">
+        <div 
+          onClick={() => setActiveCard(activeCard === 4 ? null : 4)}
+          className={`group relative col-span-1 overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 backdrop-blur-md p-6 flex flex-col justify-between transition-all duration-300 hover:border-white/20 hover:bg-zinc-900/60 shadow-[0_8px_30px_rgb(0,0,0,0.5)] cursor-pointer select-none ${activeCard === 4 ? "active-card border-white/20 bg-zinc-900/60" : ""}`}
+        >
           {/* Ambient Glow */}
           <div className="absolute -left-20 -top-20 h-48 w-48 rounded-full bg-pink-500/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
@@ -915,12 +1068,15 @@ const Features = () => {
         </div>
 
         {/* Card 5: User Hierarchy Tree */}
-        <div className="group relative col-span-1 overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 backdrop-blur-md p-6 flex flex-col justify-between transition-all duration-300 hover:border-white/20 hover:bg-zinc-900/60 shadow-[0_8px_30px_rgb(0,0,0,0.5)]">
+        <div 
+          onClick={() => setActiveCard(activeCard === 5 ? null : 5)}
+          className={`group relative col-span-1 overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/40 backdrop-blur-md p-6 flex flex-col justify-between transition-all duration-300 hover:border-white/20 hover:bg-zinc-900/60 shadow-[0_8px_30px_rgb(0,0,0,0.5)] cursor-pointer select-none ${activeCard === 5 ? "active-card border-white/20 bg-zinc-900/60" : ""}`}
+        >
           {/* Ambient Glow */}
           <div className="absolute -right-20 -top-20 h-48 w-48 rounded-full bg-violet-500/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
           {/* Visual Showcase Area */}
-          <div className="relative flex items-center justify-center flex-1 w-full z-10 select-none" style={{ minHeight: "220px" }}>
+          <div className="relative flex items-center justify-center w-[260px] h-[220px] mx-auto z-10 select-none mt-4 md:mt-0">
 
             {/* CSS styles to handle slow path drawing on hover */}
             <style dangerouslySetInnerHTML={{__html: `

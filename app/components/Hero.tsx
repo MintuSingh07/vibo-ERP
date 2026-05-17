@@ -24,7 +24,7 @@ const Hero = () => {
   return (
     <section
       onMouseMove={handleMouseMove}
-      className="relative z-0 flex min-h-screen flex-col items-center justify-center overflow-hidden pt-32 pb-20"
+      className="relative z-0 flex min-h-screen flex-col items-center justify-center overflow-hidden pt-24 md:pt-32 pb-12 md:pb-20"
     >
       {/* Background Image & Dark Overlay */}
       <div className="absolute inset-0 bg-black">
@@ -75,46 +75,46 @@ const Hero = () => {
 
       <div className="container relative z-10 mx-auto px-4 text-center">
         {/* Badge */}
-        <div className="mb-6 inline-flex items-center gap-4 rounded-full border border-zinc-800 bg-zinc-900/50 px-4 py-1.5 text-xs font-medium text-zinc-400">
+        <div className="mb-4 md:mb-5 inline-flex items-center gap-2.5 md:gap-4 rounded-full border border-white/5 bg-zinc-900/40 px-3 py-1 text-[10px] md:text-xs font-medium text-zinc-400 backdrop-blur-sm">
           <span className="flex items-center gap-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
+            <span className="h-1.2 w-1.2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)] animate-pulse" />
             Cloud Based
           </span>
-          <span className="h-3 w-[1px] bg-zinc-800" />
+          <span className="h-2.5 w-[1px] bg-zinc-800" />
           <span className="flex items-center gap-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
+            <span className="h-1.2 w-1.2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)] animate-pulse" />
             Secure Access
           </span>
-          <span className="h-3 w-[1px] bg-zinc-800" />
+          <span className="h-2.5 w-[1px] bg-zinc-800" />
           <span className="flex items-center gap-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-purple-500" />
+            <span className="h-1.2 w-1.2 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.5)] animate-pulse" />
             Real-Time Reporting
           </span>
         </div>
 
         {/* Heading */}
-        <h1 className="mx-auto max-w-5xl text-5xl font-medium tracking-tight text-white md:text-7xl leading-[1.15]">
+        <h1 className="mx-auto max-w-5xl text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight text-white leading-[1.2] md:leading-[1.15]">
           Modern Cloud ERP for <span className="font-cursive text-white font-normal lowercase tracking-normal text-[1.12em] inline-block transform translate-y-0.5 select-none">Accounting</span>, Billing &amp; Inventory.
         </h1>
 
         {/* Subheading */}
-        <p className="mx-auto mt-6 max-w-2xl text-lg font-light tracking-normal text-zinc-400 md:text-xl leading-relaxed">
+        <p className="mx-auto mt-4 md:mt-6 max-w-2xl text-base sm:text-lg md:text-xl font-light tracking-normal text-zinc-400 leading-relaxed">
           Manage invoices, inventory, reporting, and operations from one
           powerful platform.
         </p>
 
         {/* Buttons */}
-        <div className="mt-10 flex flex-wrap justify-center gap-4">
-          <button className="rounded-full bg-white px-8 py-4 text-sm font-normal tracking-tight text-black transition-all hover:bg-zinc-200 hover:scale-105 active:scale-95">
+        <div className="mt-6 md:mt-10 flex flex-wrap justify-center gap-4">
+          <button className="rounded-full bg-white px-6 py-3 text-xs font-bold uppercase tracking-wider text-black transition-all hover:bg-zinc-200 hover:scale-105 active:scale-95 duration-200">
             Get Started
           </button>
-          <button className="rounded-full border border-zinc-800 bg-zinc-900/50 px-8 py-4 text-sm font-normal tracking-tight text-white backdrop-blur-sm transition-all hover:bg-zinc-800 hover:scale-105 active:scale-95">
+          <button className="rounded-full border border-white/10 bg-zinc-950/40 px-6 py-3 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-sm transition-all hover:bg-white/10 hover:scale-105 active:scale-95 duration-200">
             Watch Demo
           </button>
         </div>
 
         {/* Dashboard Image */}
-        <div className="relative mx-auto mt-20 max-w-6xl px-4 md:px-0 group">
+        <div className="relative mx-auto mt-10 md:mt-20 max-w-6xl px-4 md:px-0 group">
           {/* Ambient Glow */}
           <div className="absolute -inset-x-6 -top-4 h-[400px] bg-gradient-to-r from-teal-400 via-white to-violet-500 opacity-60 blur-[80px] mix-blend-screen" />
 

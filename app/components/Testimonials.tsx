@@ -181,7 +181,7 @@ const Testimonials = () => {
   }, [showCelebration]);
 
   return (
-    <section id="testimonials" className="relative w-full bg-black py-24 overflow-hidden border-t border-white/5">
+    <section id="testimonials" className="relative w-full bg-black py-12 md:py-24 overflow-hidden border-t border-white/5">
       {/* ── BACKGROUND AMBIENT GLOWS ── */}
       <div className="absolute top-1/4 left-0 h-[400px] w-[400px] rounded-full bg-violet-600/10 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-0 h-[450px] w-[450px] rounded-full bg-emerald-600/10 blur-[130px] pointer-events-none" />
@@ -190,11 +190,11 @@ const Testimonials = () => {
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         
         {/* Header Block */}
-        <div className="text-center max-w-2xl mx-auto mb-20">
+        <div className="text-center max-w-2xl mx-auto mb-10 md:mb-20">
           <span className="text-zinc-500 text-xs font-bold uppercase tracking-[0.2em] block">
             Customer Success
           </span>
-          <h2 className="text-3xl sm:text-4xl font-light tracking-tight text-white mt-1.5 leading-tight">
+          <h2 className="text-2xl sm:text-4xl font-medium tracking-tight text-white mt-1.5 leading-tight">
             Loved by operations teams <span className="font-cursive text-emerald-400 font-normal lowercase tracking-normal text-[1.12em] inline-block transform translate-y-0.5 select-none">everywhere</span>
           </h2>
           <p className="text-zinc-400 text-sm mt-3 leading-relaxed">
