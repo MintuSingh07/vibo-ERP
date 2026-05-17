@@ -202,7 +202,7 @@ const Features = () => {
 
         {/* Main Heading */}
         <h2 className="max-w-3xl text-3xl sm:text-4xl font-medium tracking-tight text-white md:text-6xl leading-[1.15]">
-          Everything you need to run your business <span className="font-cursive text-emerald-400 font-normal lowercase tracking-normal text-[1.12em] inline-block transform translate-y-0.5 select-none">efficiently</span>.
+          Everything you need to run your business <span className="text-emerald-400">efficiently</span>.
         </h2>
 
         {/* Subheading */}

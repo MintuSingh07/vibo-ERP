@@ -118,7 +118,7 @@ const CTA = () => {
               Interactive Preview
             </span>
             <h2 className="text-3xl sm:text-5xl font-medium tracking-[-0.02em] mt-3 leading-[1.15] text-white">
-              Test-drive Vibo ERP <br className="hidden sm:inline" /> in <span className="font-cursive text-emerald-400 font-normal lowercase tracking-normal text-[1.12em] inline-block transform translate-y-0.5 select-none">real-time</span>.
+              Test-drive Vibo ERP <br className="hidden sm:inline" /> in <span className="text-emerald-400">real-time</span>.
             </h2>
             <p className="text-zinc-400 text-sm sm:text-base mt-5 leading-relaxed font-light tracking-wide">
               Toggle voucher types, adjust weights or rates, and experience our instant one-click WhatsApp automation right here on this page. No forms, no waiting.

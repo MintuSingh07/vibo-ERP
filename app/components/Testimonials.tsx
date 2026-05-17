@@ -195,7 +195,7 @@ const Testimonials = () => {
             Customer Success
           </span>
           <h2 className="text-2xl sm:text-4xl font-medium tracking-tight text-white mt-1.5 leading-tight">
-            Loved by operations teams <span className="font-cursive text-emerald-400 font-normal lowercase tracking-normal text-[1.12em] inline-block transform translate-y-0.5 select-none">everywhere</span>
+            Loved by operations teams <span className="text-emerald-400">everywhere</span>
           </h2>
           <p className="text-zinc-400 text-sm mt-3 leading-relaxed">
             See how operations and finance teams streamline calculations, reporting, and instant communications with Vibo ERP.
@@ -568,11 +568,11 @@ const Testimonials = () => {
             </div>
             
             <h3 className="text-3xl sm:text-5xl font-light tracking-tight text-white leading-tight">
-              You're <span className="font-cursive text-emerald-400 font-normal lowercase tracking-normal text-[1.12em] inline-block transform translate-y-0.5 select-none">Outstanding</span>!
+              You're <span className="text-emerald-400">Outstanding</span>!
             </h3>
             
             <p className="text-zinc-300 text-sm sm:text-base mt-4 max-w-md mx-auto leading-relaxed font-light">
-              Thank you so much for the <span className="font-cursive text-emerald-400 font-normal lowercase tracking-normal text-[1.22em] inline-block transform translate-y-0.5 select-none">5-star rating</span>! Your support inspires us to continue building the ultimate modern ERP experience.
+              Thank you so much for the <span className="text-emerald-400">5-star rating</span>! Your support inspires us to continue building the ultimate modern ERP experience.
             </p>
             
             <div className="mt-9 flex flex-col items-center gap-4">

@@ -94,7 +94,7 @@ const Hero = () => {
 
         {/* Heading */}
         <h1 className="mx-auto max-w-5xl text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight text-white leading-[1.2] md:leading-[1.15]">
-          Modern Cloud ERP for <span className="font-cursive text-white font-normal lowercase tracking-normal text-[1.12em] inline-block transform translate-y-0.5 select-none">Accounting</span>, Billing &amp; Inventory.
+          Modern Cloud ERP for Accounting, Billing &amp; Inventory.
         </h1>
 
         {/* Subheading */}
