@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Sacramento&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -6,6 +7,7 @@
   --color-glass-border: rgba(255, 255, 255, 0.1);
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-cursive: 'Sacramento', cursive;
   
   --animate-aura: aura 5s ease-in-out infinite alternate;
   --animate-marquee: marquee 30s linear infinite;
@@ -44,6 +46,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+}
+
+/* Bulletproof cursive fallback class */
+.font-cursive {
+  font-family: 'Sacramento', cursive !important;
 }
 
 .glass-capsule {
@@ -90,3 +97,22 @@ html.lenis body {
   pointer-events: none;
 }
 
+/* Keyframe for incoming payments slider */
+@keyframes slideDownIn {
+  from {
+    max-height: 0px;
+    opacity: 0;
+    transform: scale(0.95);
+    margin-bottom: 0px;
+  }
+  to {
+    max-height: 80px;
+    opacity: 1;
+    transform: scale(1);
+    margin-bottom: 10px;
+  }
+}
+
+.animate-slide-down-in {
+  animation: slideDownIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

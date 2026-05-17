@@ -15,25 +15,25 @@ const Navbar = () => {
             href="#"
             className="text-sm font-medium text-zinc-400 transition-colors hover:text-white"
           >
+            Home
+          </a>
+          <a
+            href="#features"
+            className="text-sm font-medium text-zinc-400 transition-colors hover:text-white"
+          >
             Features
           </a>
           <a
-            href="#"
+            href="#testimonials"
             className="text-sm font-medium text-zinc-400 transition-colors hover:text-white"
           >
-            Solutions
+            Reviews
           </a>
           <a
-            href="#"
+            href="#vouchers"
             className="text-sm font-medium text-zinc-400 transition-colors hover:text-white"
           >
-            Pricing
-          </a>
-          <a
-            href="#"
-            className="text-sm font-medium text-zinc-400 transition-colors hover:text-white"
-          >
-            About
+            Voucher Simulator
           </a>
         </div>
 

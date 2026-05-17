@@ -9,7 +9,7 @@ const Hero = () => {
 
   useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.playbackRate = 0.4; // Slows down video to 40% speed
+      videoRef.current.playbackRate = 0.4;
     }
   }, []);
 
@@ -32,12 +32,12 @@ const Hero = () => {
           src="/bg_test.svg"
           alt="Background"
           fill
-          className="object-cover scale-115 "
-          style={{ objectPosition: "center -100px" }} // Tweak the -100px to move it up (negative) or down (positive)
+          className="object-cover scale-115"
+          style={{ objectPosition: "center -100px" }}
           priority
         />
 
-        {/* White Grid Pattern (on top of SVG, under dark layer) */}
+        {/* White Grid Pattern */}
         <div
           className="absolute inset-0"
           style={{
@@ -49,7 +49,7 @@ const Hero = () => {
           }}
         />
 
-        {/* Dark layer with dynamic hover light effect */}
+        {/* Dark radial spotlight following cursor */}
         <div
           className="absolute inset-0"
           style={{
@@ -70,8 +70,11 @@ const Hero = () => {
         <source src="/smoke.mp4" type="video/mp4" />
       </video>
 
+      {/* Magnetic Glowing Circle — sits behind everything */}
+      <MagneticCircle mousePos={mousePos} />
+
       <div className="container relative z-10 mx-auto px-4 text-center">
-        {/* Badge / Small Trust Text */}
+        {/* Badge */}
         <div className="mb-6 inline-flex items-center gap-4 rounded-full border border-zinc-800 bg-zinc-900/50 px-4 py-1.5 text-xs font-medium text-zinc-400">
           <span className="flex items-center gap-1.5">
             <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
@@ -90,8 +93,8 @@ const Hero = () => {
         </div>
 
         {/* Heading */}
-        <h1 className="mx-auto max-w-5xl bg-gradient-to-b from-white to-zinc-400 bg-clip-text text-5xl font-semibold tracking-tighter text-transparent md:text-7xl">
-          Modern Cloud ERP for Accounting, Billing & Inventory Management.
+        <h1 className="mx-auto max-w-5xl text-5xl font-medium tracking-tight text-white md:text-7xl leading-[1.15]">
+          Modern Cloud ERP for <span className="font-cursive text-white font-normal lowercase tracking-normal text-[1.12em] inline-block transform translate-y-0.5 select-none">Accounting</span>, Billing &amp; Inventory.
         </h1>
 
         {/* Subheading */}
@@ -110,24 +113,22 @@ const Hero = () => {
           </button>
         </div>
 
-        {/* Dashboard Image with Aura Glow */}
+        {/* Dashboard Image */}
         <div className="relative mx-auto mt-20 max-w-6xl px-4 md:px-0 group">
-          {/* Ambient Soft Glow Behind the dashboard */}
+          {/* Ambient Glow */}
           <div className="absolute -inset-x-6 -top-4 h-[400px] bg-gradient-to-r from-teal-400 via-white to-violet-500 opacity-60 blur-[80px] mix-blend-screen" />
 
           <div className="relative rounded-2xl shadow-2xl">
-            {/* Fading Hard Light Border */}
+            {/* Fading Border */}
             <div
               className="absolute -inset-[2px] rounded-[18px] bg-gradient-to-r from-teal-400 via-white to-violet-500"
               style={{
-                WebkitMaskImage:
-                  "linear-gradient(to bottom, black 10%, transparent 70%)",
+                WebkitMaskImage: "linear-gradient(to bottom, black 10%, transparent 70%)",
               }}
             />
 
-            {/* Inner Dashboard Container */}
+            {/* Dashboard */}
             <div className="relative z-10 overflow-hidden rounded-2xl bg-zinc-950 border border-white/5">
-              {/* Additional Top Edge Highlight inside the image */}
               <div className="absolute inset-x-0 top-0 h-[1px] bg-white/50 z-20" />
               <Image
                 src="/MainDashboard.svg"
@@ -137,30 +138,132 @@ const Hero = () => {
                 className="w-full object-cover"
                 priority
               />
-              {/* Subtle Gradient Overlay on the image to blend */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Background radial lines (optional decorative element from reference) */}
-      <div className="absolute top-1/2 left-1/2 -z-20 h-[1000px] w-[1000px] -translate-x-1/2 -translate-y-1/2 opacity-20">
-        <svg
-          viewBox="0 0 100 100"
-          className="h-full w-full stroke-zinc-800 fill-none"
-        >
-          <circle cx="50" cy="50" r="10" strokeWidth="0.1" />
-          <circle cx="50" cy="50" r="20" strokeWidth="0.1" />
-          <circle cx="50" cy="50" r="30" strokeWidth="0.1" />
-          <circle cx="50" cy="50" r="40" strokeWidth="0.1" />
-          <circle cx="50" cy="50" r="50" strokeWidth="0.1" />
-        </svg>
-      </div>
-
-      {/* Bottom Black Fade to blend dashboard into next section */}
+      {/* Bottom fade */}
       <div className="absolute bottom-0 left-0 right-0 h-[350px] bg-gradient-to-t from-black via-black/80 to-transparent z-40 pointer-events-none" />
     </section>
+  );
+};
+
+// ─── Magnetic Circle ───────────────────────────────────────────────────────────
+// The glowing concentric rings are drawn in an absolutely positioned div
+// centred in the hero. A rAF loop lerps the current offset toward a target
+// offset computed from the mouse position, giving a spring-like drag feel.
+// Proximity to the centre intensifies the pull AND brightens the glow.
+// ──────────────────────────────────────────────────────────────────────────────
+const MagneticCircle = ({
+  mousePos,
+}: {
+  mousePos: { x: number; y: number };
+}) => {
+  const wrapRef = useRef<HTMLDivElement>(null);
+
+  // All mutable animation state lives in refs so we never cause re-renders
+  // from inside the rAF loop — keeping it silky smooth.
+  const curPos = useRef({ x: 0, y: 0 });
+  const tgtPos = useRef({ x: 0, y: 0 });
+  const curScale = useRef(1);
+  const tgtScale = useRef(1);
+  const curGlow = useRef(0); // 0–1, drives glow intensity
+  const tgtGlow = useRef(0);
+  const rafId = useRef<number | null>(null);
+
+  // ── Recompute magnetic target whenever the mouse moves ───────────────────
+  useEffect(() => {
+    const section = wrapRef.current?.parentElement;
+    if (!section) return;
+    if (mousePos.x === -1000) return; // cursor hasn't entered yet
+
+    const { width, height } = section.getBoundingClientRect();
+    const cx = width / 2;
+    const cy = height / 2;
+
+    const dx = mousePos.x - cx;
+    const dy = mousePos.y - cy;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    // Normalised distance: 0 = cursor at centre, 1 = cursor at edge
+    const maxDist = Math.sqrt(cx * cx + cy * cy);
+    const normDist = Math.min(1, dist / maxDist);
+
+    // Strength peaks when cursor is near the centre (proximity effect)
+    const proximity = 1 - normDist;           // 0 far away → 1 at centre
+    const magnetStrength = proximity * proximity * 100; // px, eased quadratically
+
+    // Direction unit vector scaled by strength
+    const angle = Math.atan2(dy, dx);
+    tgtPos.current = {
+      x: Math.cos(angle) * magnetStrength,
+      y: Math.sin(angle) * magnetStrength,
+    };
+
+    // Scale up slightly and glow brighter when drawn in
+    tgtScale.current = 1 + proximity * 0.20;
+    tgtGlow.current = proximity;             // 0–1
+  }, [mousePos]);
+
+  // ── rAF animation loop ───────────────────────────────────────────────────
+  useEffect(() => {
+    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
+    const DRAG   = 0.055;  // position ease — lower = more lag / springier
+    const SDRAG  = 0.07;   // scale ease
+    const GDRAG  = 0.07;   // glow ease
+
+    const tick = () => {
+      curPos.current.x   = lerp(curPos.current.x,   tgtPos.current.x,   DRAG);
+      curPos.current.y   = lerp(curPos.current.y,   tgtPos.current.y,   DRAG);
+      curScale.current   = lerp(curScale.current,   tgtScale.current,   SDRAG);
+      curGlow.current    = lerp(curGlow.current,    tgtGlow.current,    GDRAG);
+
+      if (wrapRef.current) {
+        const s  = curScale.current;
+        const g  = curGlow.current;              // 0–1
+
+        // Glow radii and opacities ramp with proximity
+        const violetBlur = 20 + g * 80;
+        const tealBlur   = 40 + g * 140;
+        const violetAlpha = 0.10 + g * 0.45;
+        const tealAlpha   = 0.06 + g * 0.34;
+
+        wrapRef.current.style.transform = `translate(calc(-50% + ${curPos.current.x}px), calc(-50% + ${curPos.current.y}px)) scale(${s})`;
+        wrapRef.current.style.filter    = [
+          `drop-shadow(0 0 ${violetBlur}px rgba(139,92,246,${violetAlpha}))`,
+          `drop-shadow(0 0 ${tealBlur}px rgba(20,184,166,${tealAlpha}))`,
+        ].join(" ");
+      }
+
+      rafId.current = requestAnimationFrame(tick);
+    };
+
+    rafId.current = requestAnimationFrame(tick);
+    return () => {
+      if (rafId.current !== null) cancelAnimationFrame(rafId.current);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={wrapRef}
+      className="absolute top-1/2 left-1/2 -z-10 pointer-events-none"
+      style={{ willChange: "transform, filter" }}
+    >
+      <svg
+        viewBox="0 0 100 100"
+        className="h-[1000px] w-[1000px] fill-none"
+      >
+        {/* Rings — outer to inner, gradually brighter */}
+        <circle cx="50" cy="50" r="50" stroke="rgba(139,92,246,0.06)"  strokeWidth="0.08" />
+        <circle cx="50" cy="50" r="40" stroke="rgba(139,92,246,0.10)"  strokeWidth="0.09" />
+        <circle cx="50" cy="50" r="30" stroke="rgba(139,92,246,0.16)"  strokeWidth="0.10" />
+        <circle cx="50" cy="50" r="20" stroke="rgba(20,184,166,0.22)"  strokeWidth="0.12" />
+        <circle cx="50" cy="50" r="10" stroke="rgba(20,184,166,0.36)"  strokeWidth="0.15" />
+      </svg>
+    </div>
   );
 };
 
